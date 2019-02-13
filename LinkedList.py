@@ -211,21 +211,33 @@ class CircularLinkedList(LinkedList):
 
 
 if __name__ == "__main__":
-    linked_list = CircularLinkedList()
-    linked_list.append(DataNode(0))
-    linked_list.append(DataNode(1))
-    linked_list.append(DataNode(2))
-    linked_list.append(DataNode(3))
-    linked_list.append(DataNode(4))
-    linked_list.append(DataNode(5))
-    linked_list.append(DataNode(6))
 
-    linked_list.insert(2, DataNode(1.5))
-    linked_list.append(DataNode(10))
-    linked_list.prepend(DataNode(-1))
+    class MyNode(Node):
+        def __init__(self, my_data):
+            super().__init__()
+            self.my_data = my_data
 
-    linked_list.connected = True
+        def __str__(self):
+            return str(self.my_data)
 
-    linked_list.insert(11, DataNode(11))
+    linked_list = LinkedList()
 
+    print("adding to list:")
+    node_1 = MyNode("test1")
+    linked_list.append(node_1)
+    linked_list.prepend(MyNode("test0"))
+    linked_list.insert(-1, MyNode("test3"))
+    linked_list.insert(2, MyNode("test2"))
     print(linked_list)
+
+    print()
+    print("retrieving from list:")
+    print(linked_list[1])
+    print(linked_list.index_of(node_1))
+    print(linked_list.find(lambda node: node.my_data == "test3"))
+
+    print()
+    print("removing from list:")
+    print(linked_list.remove(0))
+    print(linked_list.pop())
+
