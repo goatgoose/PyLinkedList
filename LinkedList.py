@@ -1,9 +1,10 @@
+from typing import Any, Optional
 
 
-class Node(object):
+class Node:
     def __init__(self):
-        self._head = None
-        self._tail = None
+        self._head: Node = None
+        self._tail: Node = None
 
     @property
     def head(self):
@@ -23,23 +24,23 @@ class Node(object):
 
 
 class DataNode(Node):
-    def __init__(self, data):
-        super(DataNode, self).__init__()
+    def __init__(self, data: Any):
+        super().__init__()
         self.data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.data)
 
 
-class LinkedList(object):
+class LinkedList:
     def __init__(self):
-        self.first = None
-        self.last = None
+        self.first: Node = None
+        self.last: Node = None
 
         self.length = 0
         self.connected = False
 
-    def insert(self, index, node):
+    def insert(self, index: int, node: Node) -> None:
         to_insert = node
         if index == 0:
             if self.first:
@@ -63,7 +64,7 @@ class LinkedList(object):
             raise IndexError()
         self.length += 1
 
-    def remove(self, index):
+    def remove(self, index: int) -> Node:
         to_remove = self.get(index)
 
         if to_remove == self.last:
@@ -85,16 +86,16 @@ class LinkedList(object):
         self.length -= 1
         return to_remove
 
-    def pop(self, index=-1):
+    def pop(self, index: int =-1) -> Node:
         return self.remove(index)
 
-    def append(self, data):
-        self.insert(self.length, data)
+    def append(self, node: Node) -> None:
+        self.insert(self.length, node)
 
-    def prepend(self, data):
-        self.insert(0, data)
+    def prepend(self, node: Node) -> None:
+        self.insert(0, node)
 
-    def get(self, index):
+    def get(self, index: int) -> Node:
         if index < 0:
             index = self.length + index
         if self.connected:
@@ -114,16 +115,17 @@ class LinkedList(object):
                 node = node.tail
             return node
 
-    def set(self, index, node):
+    def set(self, index: int, node: Node) -> None:
         self.remove(index)
         self.insert(index, node)
 
-    def find(self, func):
+    def find(self, func) -> Optional[Node]:
         for node in self:
             if func(node):
                 return node
+        return None
 
-    def index_of(self, node):
+    def index_of(self, node: Node) -> Optional[int]:
         for i, _node in enumerate(self):
             if _node == node:
                 return i
@@ -136,18 +138,17 @@ class LinkedList(object):
             node = node.head
         if node:
             yield node  # yield the head
-        raise StopIteration
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Node:
         return self.get(index)
 
-    def __setitem__(self, index, data):
-        self.set(index, data)
+    def __setitem__(self, index: int, node: Node) -> None:
+        self.set(index, node)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.length
 
-    def __str__(self):
+    def __str__(self) -> str:
         string = ""
         for i, data in enumerate(self):
             string += str(data)
@@ -158,7 +159,7 @@ class LinkedList(object):
 
 class CircularLinkedList(LinkedList):
     def __init__(self):
-        super(CircularLinkedList, self).__init__()
+        super().__init__()
 
         self._connected = False
 
@@ -167,7 +168,7 @@ class CircularLinkedList(LinkedList):
         return self._connected
 
     @connected.setter
-    def connected(self, value):
+    def connected(self, value: bool):
         if value:
             self._connected = True
             if self.last:
@@ -179,31 +180,31 @@ class CircularLinkedList(LinkedList):
                 self.last.tail = None
                 self.first.head = None
 
-    def to_modular_index(self, index):
+    def to_modular_index(self, index: int) -> int:
         if self.connected:
             return index % (self.__len__() + 1)
         return index
 
-    def insert(self, index, node):
-        super(CircularLinkedList, self).insert(self.to_modular_index(index), node)
+    def insert(self, index: int, node: Node) -> None:
+        super().insert(self.to_modular_index(index), node)
         if self.connected:
             self.last.head = self.first
             self.first.tail = self.last
 
-    def remove(self, index):
-        removed = super(CircularLinkedList, self).remove(self.to_modular_index(index))
+    def remove(self, index: int) -> Node:
+        removed = super().remove(self.to_modular_index(index))
         if self.connected:
             self.last.head = self.first
             self.first.tail = self.last
         return removed
 
-    def pop(self, index=-1):
+    def pop(self, index: int =-1) -> Node:
         return super(CircularLinkedList, self).pop(self.to_modular_index(index))
 
-    def get(self, index):
+    def get(self, index: int) -> Node:
         return super(CircularLinkedList, self).get(self.to_modular_index(index))
 
-    def set(self, index, node):
+    def set(self, index: int, node: Node) -> None:
         super(CircularLinkedList, self).set(self.to_modular_index(index), node)
 
 
