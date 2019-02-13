@@ -42,6 +42,8 @@ class LinkedList:
 
     def insert(self, index: int, node: Node) -> None:
         to_insert = node
+        if index < 0:
+            index = self.length + index + 1
         if index == 0:
             if self.first:
                 to_insert.head = self.first
@@ -97,12 +99,7 @@ class LinkedList:
 
     def get(self, index: int) -> Node:
         if index < 0:
-            index = self.length + index
-        if self.connected:
-            index = index % self.length
-        else:
-            if index >= self.length:
-                raise IndexError()
+            index = self.length + index + 1
 
         if index < self.length / 2:
             node = self.first
@@ -202,6 +199,11 @@ class CircularLinkedList(LinkedList):
         return super(CircularLinkedList, self).pop(self.to_modular_index(index))
 
     def get(self, index: int) -> Node:
+        if self.connected:
+            index = index % self.length
+        else:
+            if index >= self.length:
+                raise IndexError()
         return super(CircularLinkedList, self).get(self.to_modular_index(index))
 
     def set(self, index: int, node: Node) -> None:
