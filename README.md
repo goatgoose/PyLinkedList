@@ -3,6 +3,8 @@
 ## Usage
 
 ```
+from PyLinkedList import LinkedList, Node
+
 class MyNode(Node):
     def __init__(self, my_data):
         super().__init__()
